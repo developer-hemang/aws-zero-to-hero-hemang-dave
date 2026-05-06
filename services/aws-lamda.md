@@ -15,19 +15,17 @@ Serverless does NOT mean no servers.
 - AWS manages infrastructure
 - You only write code
 
-<details>
-<summary> 
+
+
 
 # 🔥 1. What is AWS Lambda (Simple but Strong Definition)
-
-</summary>
 
 AWS Lambda is a serverless compute service that lets you run code without managing servers.
 You just upload your code → AWS handles execution, scaling, patching, availability.
 
 👉 You pay only for execution time (ms level billing).
 
-</details>
+
 # Why Lamda 
 
 - Vertual functions - no servers to manage!
