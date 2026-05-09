@@ -186,6 +186,207 @@ API Gateway validates token
 Lambda executes
 ```
 
+
+## Cognito Hosted UI
+
+AWS provides ready-made login UI.
+
+Features:
+- Login page
+- Signup page
+- Forgot password
+- MFA pages
+
+
+Benefits:
+- No frontend auth UI development
+- Faster implementation
+
+
+
+Two Ways to Use Cognito Login
+
+| Method            | Description                             |
+| ----------------- | --------------------------------------- |
+| Cognito Hosted UI | AWS provides ready-made login pages     |
+| Custom UI         | You build your own login/signup screens |
+
+
+### 1. Cognito Hosted UI
+
+AWS gives prebuilt pages for:
+- Login
+- Signup
+- Forgot password
+- MFA
+- Social login
+
+Example:
+
+```bash
+https://your-domain.auth.us-east-1.amazoncognito.com/login
+```
+
+Benefits
+
+- ✅ Fast setup
+- ✅ Secure
+- ✅ Minimal coding
+- ✅ Easy social login integration
+
+Limitations
+
+- ❌ Limited customization
+- ❌ Branding limitations
+- ❌ UI control limited
+
+
+2. Custom Login Page (Most Common)
+
+You build:
+- React login page
+- Angular login page
+- Mobile app login screen
+- Node.js frontend
+- Vue frontend
+
+Then frontend communicates with Cognito APIs.
+
+### Architecture
+
+```bash
+Custom React Login Page
+          ↓
+      Cognito APIs
+          ↓
+     JWT Tokens
+          ↓
+     API Gateway
+          ↓
+        Lambda
+``` 
+
+### What Happens Internally?
+
+Your frontend sends:
+
+```json
+{
+  "username": "test@gmail.com",
+  "password": "Password@123"
+}
+```
+
+to Cognito.
+Cognito:
+
+- Validates credentials
+- Generates JWT tokens
+- Returns tokens to frontend
+
+
+### Services/SDKs Used
+
+Usually:
+
+| Service           | Purpose                   |
+| ----------------- | ------------------------- |
+| Cognito User Pool | Authentication            |
+| AWS Amplify       | Easy frontend integration |
+| AWS SDK           | Direct Cognito API calls  |
+
+
+## Option 1 — Using AWS Amplify (Recommended)
+
+Amplify simplifies Cognito integration.
+
+```js
+
+import { Auth } from 'aws-amplify';
+
+async function signIn() {
+  try {
+    const user = await Auth.signIn(
+      'test@gmail.com',
+      'Password@123'
+    );
+
+    console.log(user);
+  } catch (err) {
+    console.log(err);
+  }
+}
+```
+
+### Signup Example
+```js
+await Auth.signUp({
+  username: 'test@gmail.com',
+  password: 'Password@123',
+  attributes: {
+    email: 'test@gmail.com'
+  }
+});
+
+```
+
+Forgot Password Example
+
+```js
+await Auth.forgotPassword('test@gmail.com');
+```
+
+
+## Option 2 — Using AWS SDK Directly
+
+You can directly call Cognito APIs.
+
+Example:
+
+```js
+const AWS = require('aws-sdk');
+
+const cognito = new AWS.CognitoIdentityServiceProvider();
+
+const params = {
+  AuthFlow: 'USER_PASSWORD_AUTH',
+  ClientId: 'CLIENT_ID',
+  AuthParameters: {
+    USERNAME: 'test@gmail.com',
+    PASSWORD: 'Password@123'
+  }
+};
+
+const response = await cognito.initiateAuth(params).promise();
+
+```
+
+### Features You Can Build in Custom UI
+
+| Feature            | Supported |
+| ------------------ | --------- |
+| Signup             | Yes       |
+| Login              | Yes       |
+| Social Login       | Yes       |
+| MFA                | Yes       |
+| Forgot Password    | Yes       |
+| OTP Verification   | Yes       |
+| Custom Validation  | Yes       |
+| Profile Management | Yes       |
+
+
+## Cognito Hosted UI vs Custom UI
+
+
+| Feature | Hosted UI | Custom UI |
+|---|---|
+| Fast setup | ✅ | ❌ |
+| Full branding | ❌ | ✅ |
+| Full customization | ❌ | ✅ |
+| Development effort | Low | High |
+| Flexibility | Limited | Very high |
+
+
 # 2. Cognito Identity Pool
 
 Definition
@@ -242,6 +443,11 @@ User uploads image to S3
 | CloudWatch  | Monitoring             |
 | WAF         | Security protection    |
 
+
+
+Authentication Flow in Cognito
+
+Basic Authentication Flow
 
 
 
